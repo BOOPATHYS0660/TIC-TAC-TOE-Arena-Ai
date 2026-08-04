@@ -53,7 +53,7 @@ export function render(
     for (let x = x0; x < x1; x++) {
       const px = x * tile;
       const py = y * tile;
-      if (s.grid[y][x] === 1) {
+      if (s.grid[y]![x] === 1) {
         ctx.fillStyle = (x + y) % 2 === 0 ? COLORS.floor : COLORS.floorAlt;
         ctx.fillRect(px, py, tile, tile);
         ctx.strokeStyle = COLORS.grout;

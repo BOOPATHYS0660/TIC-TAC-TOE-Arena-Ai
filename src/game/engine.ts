@@ -163,7 +163,7 @@ export function isFloor(grid: number[][], x: number, y: number) {
   const tx = Math.floor(x);
   const ty = Math.floor(y);
   if (tx < 0 || ty < 0 || tx >= MAP_W || ty >= MAP_H) return false;
-  return grid[ty][tx] === 1;
+  return grid[ty]?.[tx] === 1;
 }
 
 /** Circle-vs-tile collision check used for both player and ghost movement. */
@@ -342,7 +342,7 @@ export function update(s: GameState, dt: number, input: Input): GameEvent[] {
   } else if (g.state === "patrol") {
     if (g.path.length === 0) {
       const names = Object.keys(ROOMS) as RoomName[];
-      const target = pointInRoom(names[Math.floor(Math.random() * names.length)]);
+      const target = pointInRoom(names[Math.floor(Math.random() * names.length)]!);
       g.path = findPath(s.grid, g, target);
     }
   }
@@ -350,7 +350,7 @@ export function update(s: GameState, dt: number, input: Input): GameEvent[] {
   // Follow the path.
   const speed = g.state === "chase" ? cfg.ghostSpeed : cfg.ghostSpeed * 0.55;
   if (g.state !== "detect" && g.path.length) {
-    const next = g.path[0];
+    const next = g.path[0]!;
     const vx = next.x - g.x;
     const vy = next.y - g.y;
     const d = Math.hypot(vx, vy);
@@ -405,9 +405,9 @@ export function useHint(s: GameState) {
       Math.hypot(a.x - s.player.x, a.y - s.player.y) -
       Math.hypot(b.x - s.player.x, b.y - s.player.y),
   );
-  s.hintTarget = remaining[0];
+  s.hintTarget = remaining[0]!;
   s.hintTimer = 5;
-  s.message = `Hint: nearest key is in the ${remaining[0].room}`;
+  s.message = `Hint: nearest key is in the ${remaining[0]!.room}`;
   s.messageTimer = 4;
   return true;
 }

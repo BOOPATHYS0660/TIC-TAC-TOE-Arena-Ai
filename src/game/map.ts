@@ -54,7 +54,7 @@ export function buildGrid(): number[][] {
   const carve = (r: Rect) => {
     for (let y = r.y; y < r.y + r.h; y++) {
       for (let x = r.x; x < r.x + r.w; x++) {
-        if (y >= 0 && y < MAP_H && x >= 0 && x < MAP_W) grid[y][x] = 1;
+        if (y >= 0 && y < MAP_H && x >= 0 && x < MAP_W) grid[y]![x] = 1;
       }
     }
   };
