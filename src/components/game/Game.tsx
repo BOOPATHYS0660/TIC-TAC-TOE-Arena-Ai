@@ -18,7 +18,7 @@ import {
   objectiveText,
   SCORE,
   update,
-  useHint,
+  activateHint,
   type Difficulty,
   type GameState,
   type Input,
@@ -97,7 +97,7 @@ export function Game() {
       }
       if (k === "p") setScreen((s) => (s === "playing" ? "paused" : s === "paused" ? "playing" : s));
       if (k === "m") setMuted((m) => !m);
-      if (k === "h" && stateRef.current && !puzzleOpen) useHint(stateRef.current);
+      if (k === "h" && stateRef.current && !puzzleOpen) activateHint(stateRef.current);
     };
     const up = (e: KeyboardEvent) => {
       const k = e.key.toLowerCase();
@@ -185,7 +185,7 @@ export function Game() {
             muted={muted}
             onToggleMute={() => setMuted((m) => !m)}
             onPause={() => setScreen("paused")}
-            onHint={() => s && useHint(s)}
+            onHint={() => s && activateHint(s)}
             hintReady={!!s && s.hintTimer === 0 && s.keysCollected < 3}
           />
           <TouchControls inputRef={inputRef} />

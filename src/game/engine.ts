@@ -397,7 +397,7 @@ export function formatTime(t: number) {
 }
 
 /** Activate the hint: highlights the nearest uncollected key. */
-export function useHint(s: GameState) {
+export function activateHint(s: GameState) {
   const remaining = s.keys.filter((k) => !k.collected);
   if (!remaining.length) return false;
   remaining.sort(
