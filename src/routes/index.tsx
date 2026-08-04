@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Game } from "@/components/game/Game";
+import { Arena } from "@/components/arena/Arena";
 
-const title = "Escape the Haunted House — 2D Browser Escape Game";
+const title = "Tic-Tac-Toe Arena AI — Neon 5-in-a-Row Strategy Game";
 const description =
-  "Trapped in a dark haunted house: collect 3 hidden keys, crack the 4-digit door code and escape before the ghost catches you. Play free in your browser.";
+  "Play Tic-Tac-Toe Arena AI: connect 5 on a 5x5 or 7x7 neon board, use bombs, shields and power-ups, and beat four AI difficulty levels in your browser.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,5 +20,5 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  return <Game />;
+  return <Arena />;
 }
