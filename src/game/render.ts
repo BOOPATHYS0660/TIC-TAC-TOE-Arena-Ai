@@ -223,8 +223,8 @@ export function render(
   const radius = tile * 5.4;
   const dark = ctx.createRadialGradient(px, py, tile * 0.6, px, py, radius);
   dark.addColorStop(0, "rgba(3,2,10,0)");
-  dark.addColorStop(0.45, "rgba(3,2,10,0.55)");
-  dark.addColorStop(1, "rgba(3,2,10,0.97)");
+  dark.addColorStop(0.45, "rgba(3,2,10,0.42)");
+  dark.addColorStop(1, "rgba(3,2,10,0.93)");
   ctx.fillStyle = dark;
   ctx.fillRect(0, 0, width, height);
 
