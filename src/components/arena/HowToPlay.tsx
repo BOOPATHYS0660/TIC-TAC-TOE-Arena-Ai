@@ -40,10 +40,6 @@ export function HowToPlay({ onClose }: { onClose: () => void }) {
             <strong className="text-foreground">⚡ Freeze:</strong> lock one square against the AI for
             a turn.
           </li>
-          <li>
-            <strong className="text-foreground">🪨 Rock:</strong> spawns every 6 turns, blocks the
-            square, then crumbles after 4 turns.
-          </li>
         </ul>
         <button type="button" className="neon-btn mt-5 w-full" onClick={onClose}>
           Got it
