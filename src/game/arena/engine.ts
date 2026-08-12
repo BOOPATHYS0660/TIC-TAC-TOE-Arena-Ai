@@ -127,18 +127,15 @@ function endTurn(s: GameState): GameState {
   next.turnCount += 1;
 
   for (const c of next.board) {
-    if (c.rock !== null) {
-      c.rock -= 1;
-      if (c.rock <= 0) c.rock = null;
-    }
     if (c.frozenTurns > 0) {
       c.frozenTurns -= 1;
       if (c.frozenTurns <= 0) c.frozenFor = null;
     }
   }
 
+
   if (next.turnCount % POWER_EVERY === 0) spawnPower(next);
-  if (next.turnCount % ROCK_EVERY === 0) spawnRock(next);
+
 
   // Extra Move lets the same player go again.
   const current = next.players[next.turn];
@@ -156,7 +153,7 @@ function freeCells(s: GameState): number[] {
   const out: number[] = [];
   for (let i = 0; i < s.board.length; i++) {
     const c = s.board[i]!;
-    if (!c.mark && c.rock === null && !c.power) out.push(i);
+    if (!c.mark && !c.power) out.push(i);
   }
   return out;
 }
@@ -168,12 +165,6 @@ function spawnPower(s: GameState) {
   s.board[i]!.power = POWER_KINDS[Math.floor(Math.random() * POWER_KINDS.length)]!;
 }
 
-function spawnRock(s: GameState) {
-  const free = freeCells(s);
-  if (!free.length) return;
-  const i = free[Math.floor(Math.random() * free.length)]!;
-  s.board[i]!.rock = ROCK_LIFETIME;
-}
 
 /** If no square is playable, the highest score wins. */
 function checkBoardFull(s: GameState): GameState {
