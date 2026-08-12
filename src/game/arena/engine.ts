@@ -121,7 +121,7 @@ export function runThrough(board: Cell[], size: number, i: number, mark: Mark) {
   return best;
 }
 
-/** Advance the clock: rocks decay, freezes expire, hazards spawn, turn flips. */
+/** Advance the clock: freezes expire, power-ups spawn, turn flips. */
 function endTurn(s: GameState): GameState {
   const next = clone(s);
   next.turnCount += 1;
