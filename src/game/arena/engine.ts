@@ -169,7 +169,7 @@ function spawnPower(s: GameState) {
 /** If no square is playable, the highest score wins. */
 function checkBoardFull(s: GameState): GameState {
   if (s.status === "over") return s;
-  const playable = s.board.some((c) => !c.mark && c.rock === null);
+  const playable = s.board.some((c) => !c.mark);
   if (playable) return s;
   const { X, O } = s.players;
   s.status = "over";
@@ -303,7 +303,7 @@ export function useFreeze(s: GameState, i: number): GameState {
   const mark = s.turn;
   const cell = s.board[i];
   if (s.status !== "playing" || s.players[mark].powers.freeze <= 0) return s;
-  if (!cell || cell.mark || cell.rock !== null) return s;
+  if (!cell || cell.mark) return s;
   const next = clone(s);
   next.players[mark].powers.freeze -= 1;
   const target = next.board[i]!;
