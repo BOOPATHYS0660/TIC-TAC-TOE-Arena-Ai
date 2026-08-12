@@ -23,8 +23,6 @@ export interface Cell {
   mark: Mark | null;
   /** Shielded marks cannot be destroyed by Bomb. */
   shielded: boolean;
-  /** Remaining turns before the rock disappears (null = no rock). */
-  rock: number | null;
   /** Collectible power-up sitting on the square. */
   power: PowerKind | null;
   /** Which player is blocked from using this square. */

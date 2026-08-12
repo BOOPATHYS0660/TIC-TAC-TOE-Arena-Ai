@@ -29,10 +29,7 @@ const POWER_KINDS: PowerKind[] = ["extra", "double", "hint", "freeze"];
 
 /** Spawn a power-up every N turns. */
 const POWER_EVERY = 3;
-/** Spawn a rock every N turns. */
-const ROCK_EVERY = 6;
-/** Rock lifetime, in turns. */
-const ROCK_LIFETIME = 4;
+
 
 export const other = (mark: Mark): Mark => (mark === "X" ? "O" : "X");
 
@@ -40,8 +37,9 @@ export const idx = (size: number, x: number, y: number) => y * size + x;
 export const xy = (size: number, i: number) => ({ x: i % size, y: Math.floor(i / size) });
 
 function emptyCell(): Cell {
-  return { mark: null, shielded: false, rock: null, power: null, frozenFor: null, frozenTurns: 0 };
+  return { mark: null, shielded: false, power: null, frozenFor: null, frozenTurns: 0 };
 }
+
 
 function newPlayer() {
   return {
@@ -83,14 +81,15 @@ function clone(s: GameState): GameState {
   };
 }
 
-/** Can `mark` place a stone on cell `i`? */
+/** Can `mark` place a mark on cell `i`? */
 export function canPlace(s: GameState, i: number, mark: Mark): boolean {
   const c = s.board[i];
   if (!c) return false;
-  if (c.mark || c.rock !== null) return false;
+  if (c.mark) return false;
   if (c.frozenFor === mark && c.frozenTurns > 0) return false;
   return true;
 }
+
 
 /** All legal placements for `mark`. */
 export function legalMoves(s: GameState, mark: Mark): number[] {
@@ -122,24 +121,21 @@ export function runThrough(board: Cell[], size: number, i: number, mark: Mark) {
   return best;
 }
 
-/** Advance the clock: rocks decay, freezes expire, hazards spawn, turn flips. */
+/** Advance the clock: freezes expire, power-ups spawn, turn flips. */
 function endTurn(s: GameState): GameState {
   const next = clone(s);
   next.turnCount += 1;
 
   for (const c of next.board) {
-    if (c.rock !== null) {
-      c.rock -= 1;
-      if (c.rock <= 0) c.rock = null;
-    }
     if (c.frozenTurns > 0) {
       c.frozenTurns -= 1;
       if (c.frozenTurns <= 0) c.frozenFor = null;
     }
   }
 
+
   if (next.turnCount % POWER_EVERY === 0) spawnPower(next);
-  if (next.turnCount % ROCK_EVERY === 0) spawnRock(next);
+
 
   // Extra Move lets the same player go again.
   const current = next.players[next.turn];
@@ -157,7 +153,7 @@ function freeCells(s: GameState): number[] {
   const out: number[] = [];
   for (let i = 0; i < s.board.length; i++) {
     const c = s.board[i]!;
-    if (!c.mark && c.rock === null && !c.power) out.push(i);
+    if (!c.mark && !c.power) out.push(i);
   }
   return out;
 }
@@ -169,17 +165,11 @@ function spawnPower(s: GameState) {
   s.board[i]!.power = POWER_KINDS[Math.floor(Math.random() * POWER_KINDS.length)]!;
 }
 
-function spawnRock(s: GameState) {
-  const free = freeCells(s);
-  if (!free.length) return;
-  const i = free[Math.floor(Math.random() * free.length)]!;
-  s.board[i]!.rock = ROCK_LIFETIME;
-}
 
 /** If no square is playable, the highest score wins. */
 function checkBoardFull(s: GameState): GameState {
   if (s.status === "over") return s;
-  const playable = s.board.some((c) => !c.mark && c.rock === null);
+  const playable = s.board.some((c) => !c.mark);
   if (playable) return s;
   const { X, O } = s.players;
   s.status = "over";
@@ -313,7 +303,7 @@ export function useFreeze(s: GameState, i: number): GameState {
   const mark = s.turn;
   const cell = s.board[i];
   if (s.status !== "playing" || s.players[mark].powers.freeze <= 0) return s;
-  if (!cell || cell.mark || cell.rock !== null) return s;
+  if (!cell || cell.mark) return s;
   const next = clone(s);
   next.players[mark].powers.freeze -= 1;
   const target = next.board[i]!;

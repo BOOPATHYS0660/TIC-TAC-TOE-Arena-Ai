@@ -460,10 +460,6 @@
   pointer-events: none;
 }
 
-@utility arena-rock {
-  font-size: clamp(0.9rem, 4vw, 1.4rem);
-  animation: place-in 0.3s ease-out;
-}
 
 @utility arena-power-icon {
   height: 45%;

@@ -51,11 +51,7 @@ export function Cell({
         frozen && "arena-cell-frozen",
       )}
     >
-      {cell.rock !== null ? (
-        <span className="arena-rock" aria-hidden>
-          🪨
-        </span>
-      ) : cell.mark ? (
+      {cell.mark ? (
         <span className={cn("arena-mark", cell.mark === "X" ? "arena-mark-x" : "arena-mark-o")}>
           {cell.mark}
           {cell.shielded && <span className="arena-shield" aria-hidden />}
@@ -65,9 +61,10 @@ export function Cell({
       ) : frozen ? (
         <Snowflake className="arena-frozen-icon" />
       ) : null}
-      {cell.mark === null && cell.rock === null && !cell.power && targetable && (
+      {cell.mark === null && !cell.power && targetable && (
         <Bomb className="hidden" />
       )}
+
     </button>
   );
 }
