@@ -29,10 +29,7 @@ const POWER_KINDS: PowerKind[] = ["extra", "double", "hint", "freeze"];
 
 /** Spawn a power-up every N turns. */
 const POWER_EVERY = 3;
-/** Spawn a rock every N turns. */
-const ROCK_EVERY = 6;
-/** Rock lifetime, in turns. */
-const ROCK_LIFETIME = 4;
+
 
 export const other = (mark: Mark): Mark => (mark === "X" ? "O" : "X");
 
@@ -40,8 +37,9 @@ export const idx = (size: number, x: number, y: number) => y * size + x;
 export const xy = (size: number, i: number) => ({ x: i % size, y: Math.floor(i / size) });
 
 function emptyCell(): Cell {
-  return { mark: null, shielded: false, rock: null, power: null, frozenFor: null, frozenTurns: 0 };
+  return { mark: null, shielded: false, power: null, frozenFor: null, frozenTurns: 0 };
 }
+
 
 function newPlayer() {
   return {
@@ -83,14 +81,15 @@ function clone(s: GameState): GameState {
   };
 }
 
-/** Can `mark` place a stone on cell `i`? */
+/** Can `mark` place a mark on cell `i`? */
 export function canPlace(s: GameState, i: number, mark: Mark): boolean {
   const c = s.board[i];
   if (!c) return false;
-  if (c.mark || c.rock !== null) return false;
+  if (c.mark) return false;
   if (c.frozenFor === mark && c.frozenTurns > 0) return false;
   return true;
 }
+
 
 /** All legal placements for `mark`. */
 export function legalMoves(s: GameState, mark: Mark): number[] {
