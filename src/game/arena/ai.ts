@@ -48,15 +48,11 @@ export function evaluate(board: Cell[], size: number, mark: Mark): number {
         let blocked = false;
         for (let k = 0; k < WIN_LEN; k++) {
           const c = board[(y + dy * k) * size + (x + dx * k)]!;
-          if (c.rock !== null) {
-            blocked = true;
-            break;
-          }
           if (c.mark === mark) mine++;
           else if (c.mark === foe) theirs++;
         }
-        if (blocked) continue;
         if (mine && theirs) continue; // dead window
+
         if (mine) score += WINDOW_VALUE[mine]!;
         else if (theirs) score -= WINDOW_VALUE[theirs]! * 1.15; // slight defensive bias
       }
@@ -129,7 +125,7 @@ function alphaBeta(
   const pseudo = { size, board } as unknown as GameState;
   const options = board
     .map((c, i) => i)
-    .filter((i) => !board[i]!.mark && board[i]!.rock === null)
+    .filter((i) => !board[i]!.mark)
     .map((i) => ({ i, sc: quickScore(board, size, i, turn) }))
     .sort((a, b) => b.sc - a.sc)
     .slice(0, 8)

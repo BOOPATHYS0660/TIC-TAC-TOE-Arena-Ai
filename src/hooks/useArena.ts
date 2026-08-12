@@ -105,7 +105,7 @@ export function useArena(size: BoardSize, difficulty: Difficulty) {
     state.board.forEach((c, i) => {
       if (target === "bomb" && c.mark === "O" && !c.shielded) set.add(i);
       if (target === "shield" && c.mark === "X" && !c.shielded) set.add(i);
-      if (target === "freeze" && !c.mark && c.rock === null) set.add(i);
+      if (target === "freeze" && !c.mark) set.add(i);
       if (target === "swap") {
         if (swapFrom === null) {
           if (c.mark === "X") set.add(i);
